@@ -1,6 +1,12 @@
 package com.example.android.politicalpreparedness.election
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.CivicsApi
+import kotlinx.coroutines.launch
+
+private const val TAG = "ElectionsViewModel"
 
 //TODO: Construct ViewModel and provide election datasource
 class ElectionsViewModel: ViewModel() {
@@ -13,4 +19,10 @@ class ElectionsViewModel: ViewModel() {
 
     //TODO: Create functions to navigate to saved or upcoming election voter info
 
+    init {
+        viewModelScope.launch {
+            val e = CivicsApi.retrofitService.getElections()
+            Log.d(TAG, e.body().toString())
+        }
+    }
 }
