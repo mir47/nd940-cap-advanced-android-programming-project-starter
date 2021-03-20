@@ -3,7 +3,9 @@
     <string name="app_name">Political Preparedness</string>
     <string name="button_elections">Upcoming elections</string>
     <string name="button_representatives">Find my representatives</string>
-
-    <!-- TODO: Add necessary string values -->
-
+    <string name="button_search">Search</string>
+    <string name="button_location">Location</string>
+    <string name="location_permission_denied">Location permission not granted</string>
+    <string name="device_location_not_available">Device location not available</string>
+    <string name="enable">Enable</string>
 </resources>

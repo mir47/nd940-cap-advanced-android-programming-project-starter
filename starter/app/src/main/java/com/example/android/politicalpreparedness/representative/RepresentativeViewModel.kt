@@ -1,6 +1,10 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.CivicsApi
+import kotlinx.coroutines.launch
 
 class RepresentativeViewModel: ViewModel() {
 
@@ -23,4 +27,14 @@ class RepresentativeViewModel: ViewModel() {
 
     //TODO: Create function to get address from individual fields
 
+    fun loadRepresentatives(address: String) {
+        viewModelScope.launch {
+            val e = CivicsApi.retrofitService.getRepresentatives(address)
+            Log.d(TAG, e.body().toString())
+        }
+    }
+
+    companion object {
+        private const val TAG = "RepresentativeViewModel"
+    }
 }
