@@ -8,48 +8,40 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.databinding.ItemElectionBinding
 import com.example.android.politicalpreparedness.network.models.Election
 
-class ElectionListAdapter(
-    private val clickListener: ElectionListener
-) : ListAdapter<Election, RecyclerView.ViewHolder>(ElectionDiffCallback()) {
+class ElectionListAdapter(private val listener: ElectionListener) :
+    ListAdapter<Election, ElectionListAdapter.ElectionViewHolder>(ELECTION_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElectionViewHolder {
-        return ElectionViewHolder.from(parent)
+        val binding = ItemElectionBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false)
+        return ElectionViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+    override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
+        val currentItem = getItem(position)
+        currentItem?.let { holder.bind(it, listener) }
+    }
+
+    /**
+     * ViewHolder for Election items. All work is done by data binding.
+     */
+    class ElectionViewHolder(private val binding: ItemElectionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: Election, listener: ElectionListener) {
+            binding.item = item
+            binding.listener = listener
+        }
     }
 
     fun interface ElectionListener {
-        fun onClick(election: Election)
+        fun onItemClick(election: Election)
     }
 
-    class ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {
-        override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
-            TODO("Not yet implemented")
-        }
-    }
-
-    class ElectionViewHolder private constructor(val binding: ItemElectionBinding)
-        : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(clickListener: ElectionListener, item: Election) {
-//            binding.sleep = item
-//            binding.clickListener = clickListener
-//            binding.executePendingBindings()
-        }
-
-        companion object {
-            fun from(parent: ViewGroup): ElectionViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemElectionBinding.inflate(layoutInflater, parent, false)
-
-                return ElectionViewHolder(binding)
-            }
+    companion object {
+        private val ELECTION_COMPARATOR = object : DiffUtil.ItemCallback<Election>() {
+            override fun areItemsTheSame(old: Election, new: Election) = old.id == new.id
+            override fun areContentsTheSame(old: Election, new: Election) = old == new
         }
     }
 }

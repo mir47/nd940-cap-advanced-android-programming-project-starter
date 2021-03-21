@@ -7,5 +7,6 @@
     <string name="button_location">Location</string>
     <string name="location_permission_denied">Location permission not granted</string>
     <string name="device_location_not_available">Device location not available</string>
-    <string name="enable">Enable</string>
+    <string name="upcoming_elections">Upcoming Elections</string>
+    <string name="saved_elections">Saved Elections</string>
 </resources>

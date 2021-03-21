@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
@@ -31,10 +33,11 @@ class ElectionsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         electionListAdapter = ElectionListAdapter {
-            it.name
+            Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show()
         }
 
-        binding.textUpcomingElectionsList.apply {
+        binding.listUpcomingElections.apply {
+            layoutManager = LinearLayoutManager(context)
             adapter = electionListAdapter
         }
 
