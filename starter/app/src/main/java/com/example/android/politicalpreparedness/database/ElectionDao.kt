@@ -52,12 +52,17 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertElection(election: Election)
 
-    //TODO: Add select all election query
+    /**
+     * Delete an election by id.
+     *
+     * @return the number of elections deleted. This should always be 1.
+     */
+    @Query("DELETE FROM election_table WHERE id = :electionId")
+    suspend fun deleteElectionById(electionId: Int): Int
 
-    //TODO: Add select single election query
-
-    //TODO: Add delete query
-
-    //TODO: Add clear query
-
+    /**
+     * Delete all elections.
+     */
+    @Query("DELETE FROM election_table")
+    suspend fun deleteElections()
 }

@@ -20,8 +20,8 @@ class ElectionListAdapter(
         TODO("Not yet implemented")
     }
 
-    interface ElectionListener {
-
+    fun interface ElectionListener {
+        fun onClick(election: Election)
     }
 
     class ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {

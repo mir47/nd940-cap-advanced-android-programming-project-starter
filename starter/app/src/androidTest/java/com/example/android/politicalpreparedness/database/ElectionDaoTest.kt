@@ -62,8 +62,6 @@ class ElectionDaoTest {
         assertThat(loaded.id, `is`(election.id))
         assertThat(loaded.name, `is`(election.name))
         assertThat(loaded.electionDay, `is`(election.electionDay))
-        assertThat(loaded.division.id, `is`(election.division.id))
-        assertThat(loaded.division.country, `is`(election.division.country))
-        assertThat(loaded.division.state, `is`(election.division.state))
+        assertThat(loaded.division, `is`(election.division))
     }
 }
