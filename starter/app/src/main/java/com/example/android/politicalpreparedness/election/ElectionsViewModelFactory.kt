@@ -2,10 +2,12 @@ package com.example.android.politicalpreparedness.election
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.politicalpreparedness.repository.ElectionRepository
 
-//TODO: Create Factory to generate ElectionViewModel with provided election datasource
-class ElectionsViewModelFactory: ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        (ElectionsViewModel() as T)
+@Suppress("UNCHECKED_CAST")
+class ElectionsViewModelFactory(
+    private val electionRepository: ElectionRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>) =
+        (ElectionsViewModel(electionRepository) as T)
 }

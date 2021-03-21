@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 
 class ElectionsFragment : Fragment() {
 
-    //TODO: Declare ViewModel
-    private val _viewModel by viewModels<ElectionsViewModel>()
+    private val viewModel: ElectionsViewModel by viewModels {
+        ElectionsViewModelFactory(
+            (requireContext().applicationContext as MyApplication).electionRepository
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,7 +24,7 @@ class ElectionsFragment : Fragment() {
     ): View {
 
         //TODO: Add ViewModel values and create ViewModel
-        _viewModel
+        viewModel
 
         //TODO: Add binding values
 

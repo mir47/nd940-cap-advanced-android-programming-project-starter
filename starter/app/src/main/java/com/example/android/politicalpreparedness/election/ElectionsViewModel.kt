@@ -1,13 +1,11 @@
 package com.example.android.politicalpreparedness.election
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.repository.ElectionRepository
 import kotlinx.coroutines.launch
 
-//TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel : ViewModel() {
+class ElectionsViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
 
     //TODO: Create live data val for upcoming elections
 
@@ -19,8 +17,9 @@ class ElectionsViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val e = CivicsApi.retrofitService.getElections()
-            Log.d(TAG, "getElections: $e")
+//            val e = CivicsApi.retrofitService.getElections()
+//            Log.d(TAG, "getElections: $e")
+            electionRepository.getElections()
         }
 
 //        viewModelScope.launch {
