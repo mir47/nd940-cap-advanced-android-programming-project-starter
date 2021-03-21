@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.CivicsApi
 import kotlinx.coroutines.launch
 
-private const val TAG = "ElectionsViewModel"
-
 //TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel: ViewModel() {
+class ElectionsViewModel : ViewModel() {
 
     //TODO: Create live data val for upcoming elections
 
@@ -22,7 +20,16 @@ class ElectionsViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             val e = CivicsApi.retrofitService.getElections()
-            Log.d(TAG, e.body().toString())
+            Log.d(TAG, "getElections: $e")
         }
+
+//        viewModelScope.launch {
+//            val e = CivicsApi.retrofitService.getVoterInfo("new york", 0)
+//            Log.d(TAG, "getVoterInfo: $e")
+//        }
+    }
+
+    companion object {
+        private const val TAG = "ElectionsViewModel"
     }
 }

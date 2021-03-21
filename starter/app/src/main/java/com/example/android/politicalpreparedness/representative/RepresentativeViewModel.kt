@@ -30,7 +30,7 @@ class RepresentativeViewModel: ViewModel() {
     fun loadRepresentatives(address: String) {
         viewModelScope.launch {
             val e = CivicsApi.retrofitService.getRepresentatives(address)
-            Log.d(TAG, e.body().toString())
+            Log.d(TAG, "getRepresentatives: $e")
         }
     }
 
