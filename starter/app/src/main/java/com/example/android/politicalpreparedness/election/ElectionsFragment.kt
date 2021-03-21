@@ -34,7 +34,11 @@ class ElectionsFragment : Fragment() {
             it.name
         }
 
-        viewModel.elections.observe(viewLifecycleOwner) { list ->
+        binding.textUpcomingElectionsList.apply {
+            adapter = electionListAdapter
+        }
+
+        viewModel.elections.observe(owner = viewLifecycleOwner) { list ->
             electionListAdapter.submitList(list)
         }
 
