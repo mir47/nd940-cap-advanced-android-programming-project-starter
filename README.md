@@ -1,3 +1,6 @@
+## Note to reviewers - configure build
+To build this project, you need to add your API key to `local.properties`. See `local.properties.example` for an example.
+
 # README Template
 
 Below is a template provided for use when building your README file for students.
