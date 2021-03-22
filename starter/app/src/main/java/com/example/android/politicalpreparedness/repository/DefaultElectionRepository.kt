@@ -7,8 +7,10 @@ import com.example.android.politicalpreparedness.data.Result.Error
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 
+// TODO: rename to DefaultDataRepository
 class DefaultElectionRepository(
     private val remoteDataSource: CivicsApiService,
     private val localDataSource: ElectionDao
@@ -29,6 +31,9 @@ class DefaultElectionRepository(
 
     override suspend fun getVouterInfo(address: String, electionId: Int): Result<VoterInfoResponse> =
         Success(remoteDataSource.getVoterInfo(address, electionId))
+
+    override suspend fun getRepresentatives(address: String): Result<RepresentativeResponse> =
+        Success(remoteDataSource.getRepresentatives(address))
 
     override suspend fun saveElection(election: Election) =
         localDataSource.insertElection(election)
