@@ -17,6 +17,9 @@ class RepresentativeViewModel(private val electionRepository: ElectionRepository
     private val _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = _representatives
 
+    private val _showProgress = MutableLiveData<Boolean>()
+    val showProgress: LiveData<Boolean> = _showProgress
+
     //TODO: Create function to fetch representatives from API from a provided address
 
     /**
@@ -35,12 +38,14 @@ class RepresentativeViewModel(private val electionRepository: ElectionRepository
     //TODO: Create function to get address from individual fields
 
     fun loadRepresentatives(address: String) {
+        _showProgress.value = true
         viewModelScope.launch {
 //            val e = CivicsApi.retrofitService.getRepresentatives(address)
 //            Log.d(TAG, "getRepresentatives: $e")
 
             val result = electionRepository.getRepresentatives(address)
             if (result.succeeded) {
+                _showProgress.value = false
                 result as Result.Success
                 val offices = result.data.offices
                 val officials = result.data.officials

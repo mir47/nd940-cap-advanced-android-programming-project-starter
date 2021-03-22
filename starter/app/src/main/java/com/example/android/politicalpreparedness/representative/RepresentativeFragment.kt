@@ -80,6 +80,8 @@ class RepresentativeFragment : Fragment() {
             representativesAdapter.submitList(it)
         }
 
+        viewModel.showProgress.observe(viewLifecycleOwner) { toggleProgress(show = it) }
+
         return binding.root
     }
 
@@ -185,6 +187,7 @@ class RepresentativeFragment : Fragment() {
     // Get location from LocationServices
     @SuppressLint("MissingPermission")
     private fun getLocation() {
+        toggleProgress(show = true)
         val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
@@ -192,6 +195,7 @@ class RepresentativeFragment : Fragment() {
             MIN_DISTANCE,
             object : LocationListener {
                 override fun onLocationChanged(location: Location) {
+                    toggleProgress()
                     setAddressFields(geoCodeLocation(location))
                     locationManager.removeUpdates(this)
                 }
@@ -223,6 +227,16 @@ class RepresentativeFragment : Fragment() {
         binding.addressLine2.setText(address.line2)
         binding.city.setText(address.city)
         binding.zip.setText(address.zip)
+    }
+
+    private fun toggleProgress(show: Boolean? = false) {
+        if (true == show) {
+            binding.progressBarBackground.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBarBackground.visibility = View.GONE
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     companion object {
