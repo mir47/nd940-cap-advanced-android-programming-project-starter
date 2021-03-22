@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.models.Address
-import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.repository.DataRepository
 import com.example.android.politicalpreparedness.repository.Result
 import com.example.android.politicalpreparedness.repository.succeeded
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
 
-class RepresentativeViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
+class RepresentativeViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
     private val _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = _representatives
@@ -36,7 +36,7 @@ class RepresentativeViewModel(private val electionRepository: ElectionRepository
         _showProgress.value = true
         viewModelScope.launch {
             address.value?.toFormattedString()?.let {
-                val result = electionRepository.getRepresentatives(it)
+                val result = dataRepository.getRepresentatives(it)
                 if (result.succeeded) {
                     _showProgress.value = false
                     result as Result.Success

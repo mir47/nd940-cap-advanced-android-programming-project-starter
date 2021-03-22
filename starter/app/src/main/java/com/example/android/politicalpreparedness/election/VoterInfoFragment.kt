@@ -17,7 +17,7 @@ class VoterInfoFragment : Fragment() {
 
     private val viewModel: VoterInfoViewModel by viewModels {
         VoterInfoViewModelFactory(
-            (requireContext().applicationContext as MyApplication).electionRepository,
+            (requireContext().applicationContext as MyApplication).dataRepository,
             VoterInfoFragmentArgs.fromBundle(requireArguments()).argElection
         )
     }

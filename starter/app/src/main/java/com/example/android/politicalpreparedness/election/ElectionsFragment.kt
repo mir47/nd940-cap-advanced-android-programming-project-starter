@@ -20,7 +20,7 @@ class ElectionsFragment : Fragment() {
 
     private val viewModel: ElectionsViewModel by viewModels {
         ElectionsViewModelFactory(
-            (requireContext().applicationContext as MyApplication).electionRepository
+            (requireContext().applicationContext as MyApplication).dataRepository
         )
     }
 

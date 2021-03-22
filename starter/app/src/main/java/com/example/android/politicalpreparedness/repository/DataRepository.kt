@@ -5,8 +5,7 @@ import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 
-// TODO: rename to DataRepository
-interface ElectionRepository {
+interface DataRepository {
 
     suspend fun getElections(): Result<List<Election>>
 

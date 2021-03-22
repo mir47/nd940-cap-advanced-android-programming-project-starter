@@ -40,7 +40,7 @@ class RepresentativeFragment : Fragment() {
 
     private val viewModel: RepresentativeViewModel by viewModels {
         RepresentativeViewModelFactory(
-            (requireContext().applicationContext as MyApplication).electionRepository
+            (requireContext().applicationContext as MyApplication).dataRepository
         )
     }
 

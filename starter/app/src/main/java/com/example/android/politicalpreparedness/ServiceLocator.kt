@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.CivicsApi
-import com.example.android.politicalpreparedness.repository.DefaultElectionRepository
-import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.repository.DefaultDataRepository
+import com.example.android.politicalpreparedness.repository.DataRepository
 
 object ServiceLocator {
 
@@ -14,21 +14,21 @@ object ServiceLocator {
     private var database: ElectionDatabase? = null
 
     @Volatile
-    var electionRepository: ElectionRepository? = null
+    var dataRepository: DataRepository? = null
         @VisibleForTesting set
 
-    fun provideElectionRepository(context: Context): ElectionRepository {
+    fun provideDataRepository(context: Context): DataRepository {
         synchronized(this) {
-            return electionRepository ?: createElectionRepository(context)
+            return dataRepository ?: createDataRepository(context)
         }
     }
 
-    private fun createElectionRepository(context: Context): ElectionRepository {
-        val newRepo = DefaultElectionRepository(
+    private fun createDataRepository(context: Context): DataRepository {
+        val newRepo = DefaultDataRepository(
             CivicsApi.retrofitService,
             ElectionDatabase.getInstance(context).electionDao
         )
-        electionRepository = newRepo
+        dataRepository = newRepo
         return newRepo
     }
 
@@ -41,7 +41,7 @@ object ServiceLocator {
                 close()
             }
             database = null
-            electionRepository = null
+            dataRepository = null
         }
     }
 }
