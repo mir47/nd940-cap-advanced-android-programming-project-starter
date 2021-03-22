@@ -9,8 +9,6 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +26,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentRepresentat
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -37,6 +36,8 @@ import java.util.*
 class RepresentativeFragment : Fragment() {
 
     private lateinit var binding: FragmentRepresentativeBinding
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: RepresentativeViewModel by viewModels {
         RepresentativeViewModelFactory(
@@ -62,6 +63,8 @@ class RepresentativeFragment : Fragment() {
                 viewModel.address.value?.state = binding.spinnerState.selectedItem as String
             }
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val representativesAdapter = RepresentativeListAdapter()
 
@@ -185,25 +188,20 @@ class RepresentativeFragment : Fragment() {
         }
     }
 
-    // Get location from LocationServices
+    // Get location from FusedLocationProviderClient
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        toggleProgress(show = true)
-        val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            MIN_TIME,
-            MIN_DISTANCE,
-            object : LocationListener {
-                override fun onLocationChanged(location: Location) {
-                    toggleProgress()
+        if (isPermissionGranted()) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
                     val address = geoCodeLocation(location)
                     viewModel.address.value = address
                     viewModel.loadRepresentatives()
-                    locationManager.removeUpdates(this)
                 }
             }
-        )
+        } else {
+            requestLocationPermission()
+        }
     }
 
     private fun geoCodeLocation(location: Location): Address {
