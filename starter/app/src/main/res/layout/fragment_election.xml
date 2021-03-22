@@ -9,21 +9,24 @@
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
         <TextView
-            android:id="@+id/headerUpcomingElections"
+            android:id="@+id/upcoming_elections_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_normal"
             android:text="@string/upcoming_elections"
+            android:textAppearance="@style/SectionTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/headerSavedElections"
+            android:id="@+id/saved_elections_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:padding="@dimen/spacing_normal"
             android:text="@string/saved_elections"
+            android:textAppearance="@style/SectionTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline" />
@@ -36,24 +39,22 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listUpcomingElections"
+            android:id="@+id/list_upcoming_elections"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing_normal"
             app:layout_constraintBottom_toBottomOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerUpcomingElections" />
+            app:layout_constraintTop_toBottomOf="@id/upcoming_elections_title" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listSavedElections"
+            android:id="@+id/list_saved_elections"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerSavedElections" />
+            app:layout_constraintTop_toBottomOf="@id/saved_elections_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

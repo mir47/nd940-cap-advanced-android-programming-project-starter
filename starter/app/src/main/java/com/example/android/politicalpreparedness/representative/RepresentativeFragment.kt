@@ -64,7 +64,10 @@ class RepresentativeFragment : Fragment() {
             viewModel.loadRepresentatives(address.toFormattedString())
         }
 
-        binding.buttonUseLocation.setOnClickListener { checkPermissionAndGetLocation() }
+        binding.buttonUseLocation.setOnClickListener {
+            hideKeyboard()
+            checkPermissionAndGetLocation()
+        }
 
         val representativesAdapter = RepresentativeListAdapter()
 
