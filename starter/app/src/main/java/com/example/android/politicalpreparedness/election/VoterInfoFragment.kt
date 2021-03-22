@@ -31,8 +31,6 @@ class VoterInfoFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        //TODO: Populate voter info -- hide views without provided data.
-
         viewModel.electionState.observe(owner = viewLifecycleOwner) {
             if (ElectionState.SAVED == it) {
                 binding.buttonFollow.text = getString(R.string.button_unfollow_election)

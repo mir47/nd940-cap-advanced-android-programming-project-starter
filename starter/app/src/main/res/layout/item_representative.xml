@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="item"
             type="com.example.android.politicalpreparedness.representative.model.Representative" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
