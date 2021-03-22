@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="com.example.android.politicalpreparedness.util.DateUtil" />
-
         <variable
             name="item"
             type="com.example.android.politicalpreparedness.network.models.Election" />
@@ -35,7 +33,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{DateUtil.INSTANCE.electionFormat(item.electionDay)}"
+            android:text="@{item.electionDay.toString()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

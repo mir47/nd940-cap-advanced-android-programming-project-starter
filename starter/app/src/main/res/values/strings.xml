@@ -9,4 +9,9 @@
     <string name="device_location_not_available">Device location not available</string>
     <string name="upcoming_elections">Upcoming Elections</string>
     <string name="saved_elections">Saved Elections</string>
+    <string name="button_follow_election">Follow Election</string>
+    <string name="button_unfollow_election">Unfollow Election</string>
+    <string name="text_ballot_info">Ballot Information</string>
+    <string name="text_voting_locations">Voting Locations</string>
+    <string name="text_election_info">Election Information</string>
 </resources>

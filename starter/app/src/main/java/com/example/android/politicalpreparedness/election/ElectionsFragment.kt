@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
@@ -15,7 +15,8 @@ import com.example.android.politicalpreparedness.election.adapter.ElectionListAd
 
 class ElectionsFragment : Fragment() {
 
-    private lateinit var electionListAdapter: ElectionListAdapter
+    private lateinit var upcomingElectionsAdapter: ElectionListAdapter
+    private lateinit var savedElectionsAdapter: ElectionListAdapter
 
     private val viewModel: ElectionsViewModel by viewModels {
         ElectionsViewModelFactory(
@@ -29,23 +30,37 @@ class ElectionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentElectionBinding.inflate(inflater)
-
         binding.lifecycleOwner = viewLifecycleOwner
 
-        electionListAdapter = ElectionListAdapter {
-            Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show()
+        upcomingElectionsAdapter = ElectionListAdapter {
+            findNavController().navigate(
+                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it)
+            )
+        }
+
+        savedElectionsAdapter = ElectionListAdapter {
+            findNavController().navigate(
+                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it)
+            )
         }
 
         binding.listUpcomingElections.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = electionListAdapter
+            adapter = upcomingElectionsAdapter
         }
 
-        viewModel.elections.observe(owner = viewLifecycleOwner) { list ->
-            electionListAdapter.submitList(list)
+        binding.listSavedElections.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = savedElectionsAdapter
         }
 
-        viewModel.fetchElections()
+        viewModel.elections.observe(owner = viewLifecycleOwner) { elections ->
+            upcomingElectionsAdapter.submitList(elections)
+        }
+
+        viewModel.savedElections.observe(owner = viewLifecycleOwner) { elections ->
+            savedElectionsAdapter.submitList(elections)
+        }
 
         //TODO: Add binding values
 
