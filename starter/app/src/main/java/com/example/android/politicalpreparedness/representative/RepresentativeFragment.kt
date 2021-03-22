@@ -231,10 +231,8 @@ class RepresentativeFragment : Fragment() {
 
     private fun toggleProgress(show: Boolean? = false) {
         if (true == show) {
-            binding.progressBackground.visibility = View.VISIBLE
             binding.progressBar.visibility = View.VISIBLE
         } else {
-            binding.progressBackground.visibility = View.GONE
             binding.progressBar.visibility = View.GONE
         }
     }
