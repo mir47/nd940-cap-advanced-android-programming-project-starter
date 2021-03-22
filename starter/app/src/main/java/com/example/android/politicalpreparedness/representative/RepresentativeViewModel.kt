@@ -6,48 +6,45 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.data.succeeded
+import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.repository.ElectionRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
 
 class RepresentativeViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
 
-    //TODO: Establish live data for representatives and address
-
     private val _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = _representatives
+
+    var address = MutableLiveData(Address())
 
     private val _showProgress = MutableLiveData<Boolean>()
     val showProgress: LiveData<Boolean> = _showProgress
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    private val _checkLocation = MutableLiveData<Boolean>()
+    val checkLocation: LiveData<Boolean> = _checkLocation
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
+    fun onUseLocationClick() {
+        _checkLocation.value = true
+    }
 
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
+    fun doneLocationCheck() {
+        _checkLocation.value = false
+    }
 
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
-
-    fun loadRepresentatives(address: String) {
+    fun loadRepresentatives() {
         _showProgress.value = true
         viewModelScope.launch {
-            val result = electionRepository.getRepresentatives(address)
-            if (result.succeeded) {
-                _showProgress.value = false
-                result as Result.Success
-                val offices = result.data.offices
-                val officials = result.data.officials
-                _representatives.value = offices.flatMap { office ->
-                    office.getRepresentatives(officials)
+            address.value?.toFormattedString()?.let {
+                val result = electionRepository.getRepresentatives(it)
+                if (result.succeeded) {
+                    _showProgress.value = false
+                    result as Result.Success
+                    val offices = result.data.offices
+                    val officials = result.data.officials
+                    _representatives.value = offices.flatMap { office ->
+                        office.getRepresentatives(officials)
+                    }
                 }
             }
         }

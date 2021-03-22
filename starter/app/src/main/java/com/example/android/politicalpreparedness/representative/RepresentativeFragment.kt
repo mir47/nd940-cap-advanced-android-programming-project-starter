@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +27,6 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
-import com.example.android.politicalpreparedness.representative.adapter.setNewValue
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -51,22 +51,16 @@ class RepresentativeFragment : Fragment() {
     ): View {
         binding = FragmentRepresentativeBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        binding.buttonFindReps.setOnClickListener {
-            hideKeyboard()
-            val address = Address(
-                binding.addressLine1.text.toString(),
-                binding.addressLine2.text.toString(),
-                binding.city.text.toString(),
-                binding.spinnerState.selectedItem.toString(),
-                binding.zip.text.toString()
-            )
-            viewModel.loadRepresentatives(address.toFormattedString())
-        }
+        binding.spinnerState.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.address.value?.state = binding.spinnerState.selectedItem as String
+            }
 
-        binding.buttonUseLocation.setOnClickListener {
-            hideKeyboard()
-            checkPermissionAndGetLocation()
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.address.value?.state = binding.spinnerState.selectedItem as String
+            }
         }
 
         val representativesAdapter = RepresentativeListAdapter()
@@ -80,7 +74,18 @@ class RepresentativeFragment : Fragment() {
             representativesAdapter.submitList(it)
         }
 
-        viewModel.showProgress.observe(viewLifecycleOwner) { toggleProgress(show = it) }
+        viewModel.showProgress.observe(viewLifecycleOwner) {
+            hideKeyboard()
+            toggleProgress(show = it)
+        }
+
+        viewModel.checkLocation.observe(viewLifecycleOwner) {
+            if (true == it) {
+                hideKeyboard()
+                checkPermissionAndGetLocation()
+                viewModel.doneLocationCheck()
+            }
+        }
 
         return binding.root
     }
@@ -196,7 +201,9 @@ class RepresentativeFragment : Fragment() {
             object : LocationListener {
                 override fun onLocationChanged(location: Location) {
                     toggleProgress()
-                    setAddressFields(geoCodeLocation(location))
+                    val address = geoCodeLocation(location)
+                    viewModel.address.value = address
+                    viewModel.loadRepresentatives()
                     locationManager.removeUpdates(this)
                 }
             }
@@ -220,14 +227,6 @@ class RepresentativeFragment : Fragment() {
     private fun hideKeyboard() {
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
-    }
-
-    private fun setAddressFields(address: Address) {
-        binding.addressLine1.setText(address.line1)
-        binding.addressLine2.setText(address.line2)
-        binding.city.setText(address.city)
-        binding.spinnerState.setNewValue(address.state)
-        binding.zip.setText(address.zip)
     }
 
     private fun toggleProgress(show: Boolean? = false) {
