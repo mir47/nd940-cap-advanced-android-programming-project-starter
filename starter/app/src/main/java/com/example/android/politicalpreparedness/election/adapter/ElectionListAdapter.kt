@@ -11,15 +11,11 @@ import com.example.android.politicalpreparedness.network.models.Election
 class ElectionListAdapter(private val listener: ElectionListener) :
     ListAdapter<Election, ElectionListAdapter.ElectionViewHolder>(ELECTION_COMPARATOR) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElectionViewHolder {
-        val binding = ItemElectionBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
-        return ElectionViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ElectionViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        currentItem?.let { holder.bind(it, listener) }
+        getItem(position)?.let { holder.bind(it, listener) }
     }
 
     /**
@@ -31,6 +27,15 @@ class ElectionListAdapter(private val listener: ElectionListener) :
         fun bind(item: Election, listener: ElectionListener) {
             binding.item = item
             binding.listener = listener
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ElectionViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemElectionBinding.inflate(layoutInflater, parent, false)
+                return ElectionViewHolder(binding)
+            }
         }
     }
 
