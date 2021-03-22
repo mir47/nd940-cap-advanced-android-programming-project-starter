@@ -1,14 +1,21 @@
 package com.example.android.politicalpreparedness.representative
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.data.Result
+import com.example.android.politicalpreparedness.data.succeeded
+import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
 
-class RepresentativeViewModel: ViewModel() {
+class RepresentativeViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
 
     //TODO: Establish live data for representatives and address
+
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>> = _representatives
 
     //TODO: Create function to fetch representatives from API from a provided address
 
@@ -29,8 +36,18 @@ class RepresentativeViewModel: ViewModel() {
 
     fun loadRepresentatives(address: String) {
         viewModelScope.launch {
-            val e = CivicsApi.retrofitService.getRepresentatives(address)
-            Log.d(TAG, "getRepresentatives: $e")
+//            val e = CivicsApi.retrofitService.getRepresentatives(address)
+//            Log.d(TAG, "getRepresentatives: $e")
+
+            val result = electionRepository.getRepresentatives(address)
+            if (result.succeeded) {
+                result as Result.Success
+                val offices = result.data.offices
+                val officials = result.data.officials
+                _representatives.value = offices.flatMap { office ->
+                    office.getRepresentatives(officials)
+                }
+            }
         }
     }
 

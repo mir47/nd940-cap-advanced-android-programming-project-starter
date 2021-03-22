@@ -20,9 +20,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -34,7 +37,13 @@ class RepresentativeFragment : Fragment() {
 
     private lateinit var binding: FragmentRepresentativeBinding
 
-    private val viewModel by viewModels<RepresentativeViewModel>()
+    private val viewModel: RepresentativeViewModel by viewModels {
+        RepresentativeViewModelFactory(
+            (requireContext().applicationContext as MyApplication).electionRepository
+        )
+    }
+
+    private lateinit var representativesAdapter: RepresentativeListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +66,19 @@ class RepresentativeFragment : Fragment() {
         }
 
         binding.buttonLocation.setOnClickListener { checkPermissionAndGetLocation() }
+
+        representativesAdapter = RepresentativeListAdapter {
+            // todo: click logic
+        }
+
+        binding.listRepresentatives.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = representativesAdapter
+        }
+
+        viewModel.representatives.observe(viewLifecycleOwner) {
+            representativesAdapter.submitList(it)
+        }
 
         return binding.root
     }

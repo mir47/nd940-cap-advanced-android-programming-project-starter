@@ -16,22 +16,32 @@ import com.example.android.politicalpreparedness.representative.model.Representa
 
 class RepresentativeListAdapter(
     private val clickListener: RepresentativeListener
-) : ListAdapter<Representative, RecyclerView.ViewHolder>(RepresentativeDiffCallback()) {
+) : ListAdapter<Representative, RepresentativeViewHolder>(REPRESENTATIVE_COMPARATOR) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepresentativeViewHolder {
-        return RepresentativeViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        RepresentativeViewHolder.from(parent)
+
+    override fun onBindViewHolder(holder: RepresentativeViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-//        holder.bind(item)
+    fun interface RepresentativeListener {
+        fun onItemClick(representative: Representative)
+    }
+
+    companion object {
+        private val REPRESENTATIVE_COMPARATOR = object : DiffUtil.ItemCallback<Representative>() {
+            override fun areItemsTheSame(old: Representative, new: Representative) = old.official == new.official
+            override fun areContentsTheSame(old: Representative, new: Representative) = old == new
+        }
     }
 }
 
-class RepresentativeViewHolder(val binding: ItemRepresentativeBinding) : RecyclerView.ViewHolder(binding.root) {
+class RepresentativeViewHolder(private val binding: ItemRepresentativeBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Representative) {
-//        binding.representative = item
+        binding.item = item
 //        binding.representativePhoto.setImageResource(R.drawable.ic_profile)
 
         //TODO: Show social links ** Hint: Use provided helper methods
@@ -85,22 +95,7 @@ class RepresentativeViewHolder(val binding: ItemRepresentativeBinding) : Recycle
         fun from(parent: ViewGroup): RepresentativeViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemRepresentativeBinding.inflate(layoutInflater, parent, false)
-
             return RepresentativeViewHolder(binding)
         }
     }
-}
-
-class RepresentativeDiffCallback : DiffUtil.ItemCallback<Representative>() {
-    override fun areItemsTheSame(oldItem: Representative, newItem: Representative): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun areContentsTheSame(oldItem: Representative, newItem: Representative): Boolean {
-        TODO("Not yet implemented")
-    }
-}
-
-interface RepresentativeListener {
-
 }
