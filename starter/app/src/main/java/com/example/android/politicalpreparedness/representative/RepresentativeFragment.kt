@@ -27,6 +27,7 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.adapter.setNewValue
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -234,8 +235,7 @@ class RepresentativeFragment : Fragment() {
         binding.addressLine1.setText(address.line1)
         binding.addressLine2.setText(address.line2)
         binding.city.setText(address.city)
-        val adapter = binding.spinnerState.adapter as ArrayAdapter<String>
-        binding.spinnerState.setSelection(adapter.getPosition(address.state))
+        binding.spinnerState.setNewValue(address.state)
         binding.zip.setText(address.zip)
     }
 
