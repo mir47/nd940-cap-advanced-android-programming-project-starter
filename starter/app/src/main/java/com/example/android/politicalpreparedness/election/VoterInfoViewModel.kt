@@ -18,19 +18,6 @@ class VoterInfoViewModel(
     private val election: Election
 ) : ViewModel() {
 
-    //TODO: Add live data to hold voter info
-
-    //TODO: Add var and methods to populate voter info
-
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
-
     private val _electionState = MutableLiveData<ElectionState>()
     val electionState: LiveData<ElectionState> = _electionState
 
@@ -38,11 +25,27 @@ class VoterInfoViewModel(
     val openUrl: LiveData<String> = _openUrl
 
     private val _voterInfo = MutableLiveData<VoterInfoResponse>()
-
+    val voterInfo: LiveData<VoterInfoResponse> = _voterInfo
 
     init {
         fetchElection()
         fetchVouterInfo()
+    }
+
+    fun toggleElection() {
+        viewModelScope.launch {
+            if (ElectionState.SAVED == _electionState.value) {
+                electionRepository.deleteElection(election.id)
+                _electionState.value = ElectionState.NOT_SAVED
+            } else {
+                electionRepository.saveElection(election)
+                _electionState.value = ElectionState.SAVED
+            }
+        }
+    }
+
+    fun openUrl(url: String) {
+        _openUrl.value = url
     }
 
     private fun fetchElection() {
@@ -65,25 +68,5 @@ class VoterInfoViewModel(
                 _voterInfo.value = result.data
             }
         }
-    }
-
-    fun toggleElection() {
-        viewModelScope.launch {
-            if (ElectionState.SAVED == _electionState.value) {
-                electionRepository.deleteElection(election.id)
-                _electionState.value = ElectionState.NOT_SAVED
-            } else {
-                electionRepository.saveElection(election)
-                _electionState.value = ElectionState.SAVED
-            }
-        }
-    }
-
-    fun onVotingLocationClick() {
-        _openUrl.value = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.votingLocationFinderUrl
-    }
-
-    fun onBallotInfoClick() {
-        _openUrl.value = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl
     }
 }
