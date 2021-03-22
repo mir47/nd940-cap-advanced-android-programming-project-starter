@@ -1,13 +1,13 @@
-package com.example.android.politicalpreparedness.election
+package com.example.android.politicalpreparedness.representative
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.repository.DataRepository
 
 @Suppress("UNCHECKED_CAST")
-class ElectionsViewModelFactory(
+class RepresentativeViewModelFactory(
     private val dataRepository: DataRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>) =
-        (ElectionsViewModel(dataRepository) as T)
+        (RepresentativeViewModel(dataRepository) as T)
 }

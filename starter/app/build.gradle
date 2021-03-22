@@ -3,35 +3,51 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion rootProject.compileSdkVersion
+
     buildFeatures {
         dataBinding true
     }
+
     defaultConfig {
         applicationId 'com.example.android.politicalpreparedness'
-        minSdkVersion 26
-        targetSdkVersion 30
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "CIVICS_API_KEY", localProperties['civicsApiKey']
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     androidExtensions {
         experimental = true
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -68,12 +84,46 @@ dependencies {
     implementation "com.squareup.moshi:moshi-adapters:$version_moshi"
 
     // Glide
-    //TODO: Add Glide Implementation
+    implementation "com.github.bumptech.glide:glide:$version_glide"
 
     //Room
     implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"
+
+    // Fragment
+    implementation "androidx.fragment:fragment-ktx:$version_fragment_ktx"
+
+    // local unit tests
+    testImplementation "junit:junit:$version_junit"
+    testImplementation "org.hamcrest:hamcrest-all:$version_hamcrest"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
+
+    // Android instrumented unit tests
+    androidTestImplementation "junit:junit:$version_junit"
+    androidTestImplementation "org.mockito:mockito-core:$version_mockito"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$version_dex_maker"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+    implementation "androidx.fragment:fragment-testing:$version_fragment"
+    implementation "androidx.test:core:$version_android_x_test_core"
+
+    implementation "androidx.test.espresso:espresso-idling-resource:$version_espresso"
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test:core-ktx:$version_android_x_test_core"
+    testImplementation "androidx.test.ext:junit-ktx:$version_android_x_test_ext_kotlin_runner"
+    testImplementation "org.robolectric:robolectric:$version_robolectric"
+    testImplementation "androidx.arch.core:core-testing:$version_arch_testing"
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation "androidx.test.ext:junit:$version_android_x_test_ext_kotlin_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$version_espresso"
+    androidTestImplementation "androidx.arch.core:core-testing:$version_arch_testing"
 }
