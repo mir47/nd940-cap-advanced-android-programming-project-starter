@@ -40,9 +40,6 @@ class RepresentativeViewModel(private val electionRepository: ElectionRepository
     fun loadRepresentatives(address: String) {
         _showProgress.value = true
         viewModelScope.launch {
-//            val e = CivicsApi.retrofitService.getRepresentatives(address)
-//            Log.d(TAG, "getRepresentatives: $e")
-
             val result = electionRepository.getRepresentatives(address)
             if (result.succeeded) {
                 _showProgress.value = false
@@ -54,9 +51,5 @@ class RepresentativeViewModel(private val electionRepository: ElectionRepository
                 }
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "RepresentativeViewModel"
     }
 }

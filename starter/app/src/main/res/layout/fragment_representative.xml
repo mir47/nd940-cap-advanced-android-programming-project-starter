@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:hint="@string/hint_address_line_1"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
@@ -36,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:autofillHints=""
+            android:hint="@string/hint_address_line_2"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
@@ -47,19 +49,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:hint="@string/hint_city"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/state"
+            app:layout_constraintEnd_toStartOf="@id/spinnerState"
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
 
-        <!-- TODO: Add default values from provided resources  -->
         <!-- TODO: Add data binding value -->
         <!-- TODO: Add visual styling and content -->
         <Spinner
-            android:id="@+id/state"
+            android:id="@+id/spinnerState"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:autofillHints=""
+            android:entries="@array/states"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toEndOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:hint="@string/hint_zip"
             android:inputType="number"
             android:maxLength="5"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,30 +85,31 @@
 
         <!-- TODO: Add visual styling and label -->
         <Button
-            android:id="@+id/button_search"
+            android:id="@+id/button_find_reps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_search"
+            android:text="@string/button_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
         <!-- TODO: Add visual styling and content -->
         <Button
-            android:id="@+id/button_location"
+            android:id="@+id/button_use_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_location"
-            app:layout_constraintTop_toBottomOf="@id/button_search" />
+            android:text="@string/button_use_location"
+            app:layout_constraintTop_toBottomOf="@id/button_find_reps" />
 
         <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/representative_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/text_my_reps"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_location" />
+            app:layout_constraintTop_toBottomOf="@id/button_use_location" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listRepresentatives"
+            android:id="@+id/list_representatives"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/spacing_normal"
@@ -126,9 +131,9 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <View
-            android:id="@+id/progressBarBackground"
+            android:id="@+id/progress_background"
             android:elevation="@dimen/progress_bar_background_elevation"
-            android:background="@color/background"
+            android:background="@color/progress_background"
             android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -139,7 +144,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progress_bar"
             android:elevation="@dimen/progress_bar_elevation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

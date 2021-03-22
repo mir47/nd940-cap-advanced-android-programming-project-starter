@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -60,12 +61,19 @@ class RepresentativeFragment : Fragment() {
 
         //TODO: Establish button listeners for field and location search
 
-        binding.buttonSearch.setOnClickListener {
+        binding.buttonFindReps.setOnClickListener {
             hideKeyboard()
-            viewModel.loadRepresentatives(binding.city.text.toString())
+            val address = Address(
+                binding.addressLine1.text.toString(),
+                binding.addressLine2.text.toString(),
+                binding.city.text.toString(),
+                binding.spinnerState.selectedItem.toString(),
+                binding.zip.text.toString()
+            )
+            viewModel.loadRepresentatives(address.toFormattedString())
         }
 
-        binding.buttonLocation.setOnClickListener { checkPermissionAndGetLocation() }
+        binding.buttonUseLocation.setOnClickListener { checkPermissionAndGetLocation() }
 
         representativesAdapter = RepresentativeListAdapter {
             // todo: click logic
@@ -226,15 +234,17 @@ class RepresentativeFragment : Fragment() {
         binding.addressLine1.setText(address.line1)
         binding.addressLine2.setText(address.line2)
         binding.city.setText(address.city)
+        val adapter = binding.spinnerState.adapter as ArrayAdapter<String>
+        binding.spinnerState.setSelection(adapter.getPosition(address.state))
         binding.zip.setText(address.zip)
     }
 
     private fun toggleProgress(show: Boolean? = false) {
         if (true == show) {
-            binding.progressBarBackground.visibility = View.VISIBLE
+            binding.progressBackground.visibility = View.VISIBLE
             binding.progressBar.visibility = View.VISIBLE
         } else {
-            binding.progressBarBackground.visibility = View.GONE
+            binding.progressBackground.visibility = View.GONE
             binding.progressBar.visibility = View.GONE
         }
     }
