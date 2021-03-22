@@ -87,6 +87,13 @@ class RepresentativeFragment : Fragment() {
             }
         }
 
+        viewModel.showError.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                showError(getString(it))
+                viewModel.doneShowingError()
+            }
+        }
+
         return binding.root
     }
 
@@ -98,10 +105,7 @@ class RepresentativeFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isEmpty() || grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED) {
             Log.e(TAG, "Permission not granted")
-            Snackbar.make(binding.root,
-                R.string.location_permission_denied,
-                Snackbar.LENGTH_SHORT
-            ).show()
+            showError(getString(R.string.location_permission_denied))
         } else {
             Log.d(TAG, "Permission granted!")
             checkDeviceLocationSettings()
@@ -158,11 +162,7 @@ class RepresentativeFragment : Fragment() {
                     Log.e(TAG, "Error getting location settings resolution: " + sendEx.message)
                 }
             } else {
-                Snackbar.make(
-                    binding.root,
-                    R.string.device_location_not_available,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showError(getString(R.string.device_location_not_available))
             }
         }
         locationSettingsResponseTask.addOnCompleteListener {
@@ -180,11 +180,7 @@ class RepresentativeFragment : Fragment() {
                 getLocation()
             } else {
                 Log.e(TAG, "Location not enabled, user cancelled.")
-                Snackbar.make(
-                    binding.root,
-                    R.string.device_location_not_available,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showError(getString(R.string.device_location_not_available))
             }
         }
     }
@@ -235,6 +231,10 @@ class RepresentativeFragment : Fragment() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun showError(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {
