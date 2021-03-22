@@ -17,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -45,22 +44,13 @@ class RepresentativeFragment : Fragment() {
         )
     }
 
-    private lateinit var representativesAdapter: RepresentativeListAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRepresentativeBinding.inflate(inflater)
-
-        //TODO: Establish bindings
-
-        //TODO: Define and assign Representative adapter
-
-        //TODO: Populate Representative adapter
-
-        //TODO: Establish button listeners for field and location search
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.buttonFindReps.setOnClickListener {
             hideKeyboard()
@@ -76,9 +66,7 @@ class RepresentativeFragment : Fragment() {
 
         binding.buttonUseLocation.setOnClickListener { checkPermissionAndGetLocation() }
 
-        representativesAdapter = RepresentativeListAdapter {
-            // todo: click logic
-        }
+        val representativesAdapter = RepresentativeListAdapter()
 
         binding.listRepresentatives.apply {
             layoutManager = LinearLayoutManager(context)

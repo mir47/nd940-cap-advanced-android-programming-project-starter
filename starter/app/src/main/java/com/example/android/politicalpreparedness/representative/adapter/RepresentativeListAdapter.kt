@@ -14,19 +14,13 @@ import com.example.android.politicalpreparedness.databinding.ItemRepresentativeB
 import com.example.android.politicalpreparedness.network.models.Channel
 import com.example.android.politicalpreparedness.representative.model.Representative
 
-class RepresentativeListAdapter(
-    private val clickListener: RepresentativeListener
-) : ListAdapter<Representative, RepresentativeViewHolder>(REPRESENTATIVE_COMPARATOR) {
+class RepresentativeListAdapter : ListAdapter<Representative, RepresentativeViewHolder>(REPRESENTATIVE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         RepresentativeViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: RepresentativeViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
-    }
-
-    fun interface RepresentativeListener {
-        fun onItemClick(representative: Representative)
     }
 
     companion object {
@@ -42,30 +36,25 @@ class RepresentativeViewHolder(private val binding: ItemRepresentativeBinding) :
 
     fun bind(item: Representative) {
         binding.item = item
-//        binding.representativePhoto.setImageResource(R.drawable.ic_profile)
-
-        //TODO: Show social links ** Hint: Use provided helper methods
-        //TODO: Show www link ** Hint: Use provided helper methods
-
+        item.official.channels?.let { showSocialLinks(it) }
+        item.official.urls?.let { showWWWLinks(it) }
         binding.executePendingBindings()
     }
-
-    //TODO: Add companion object to inflate ViewHolder (from)
 
     private fun showSocialLinks(channels: List<Channel>) {
         val facebookUrl = getFacebookUrl(channels)
         if (!facebookUrl.isNullOrBlank()) {
-//            enableLink(binding.facebookIcon, facebookUrl)
+            enableLink(binding.iconFacebook, facebookUrl)
         }
 
         val twitterUrl = getTwitterUrl(channels)
         if (!twitterUrl.isNullOrBlank()) {
-//            enableLink(binding.twitterIcon, twitterUrl)
+            enableLink(binding.iconTwitter, twitterUrl)
         }
     }
 
     private fun showWWWLinks(urls: List<String>) {
-//        enableLink(binding.wwwIcon, urls.first())
+        enableLink(binding.iconWww, urls.first())
     }
 
     private fun getFacebookUrl(channels: List<Channel>): String? {
