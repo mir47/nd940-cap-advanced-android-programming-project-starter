@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.data
+package com.example.android.politicalpreparedness.repository
 
 /**
  * A generic class that holds a value with its loading status.

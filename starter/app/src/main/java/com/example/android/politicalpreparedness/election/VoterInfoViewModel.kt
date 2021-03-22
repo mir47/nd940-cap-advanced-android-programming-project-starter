@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.data.Result
-import com.example.android.politicalpreparedness.data.succeeded
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.repository.Result
+import com.example.android.politicalpreparedness.repository.succeeded
 import kotlinx.coroutines.launch
 
 enum class ElectionState { SAVED, NOT_SAVED }

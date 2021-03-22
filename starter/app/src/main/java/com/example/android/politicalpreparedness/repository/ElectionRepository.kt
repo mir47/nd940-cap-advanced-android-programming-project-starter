@@ -1,7 +1,6 @@
 package com.example.android.politicalpreparedness.repository
 
 import androidx.lifecycle.LiveData
-import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse

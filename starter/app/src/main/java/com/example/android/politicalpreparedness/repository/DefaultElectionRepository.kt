@@ -1,14 +1,13 @@
 package com.example.android.politicalpreparedness.repository
 
 import androidx.lifecycle.LiveData
-import com.example.android.politicalpreparedness.data.Result
-import com.example.android.politicalpreparedness.data.Result.Success
-import com.example.android.politicalpreparedness.data.Result.Error
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import com.example.android.politicalpreparedness.repository.Result.Error
+import com.example.android.politicalpreparedness.repository.Result.Success
 
 // TODO: rename to DefaultDataRepository
 class DefaultElectionRepository(
@@ -40,9 +39,5 @@ class DefaultElectionRepository(
 
     override suspend fun deleteElection(electionId: Int) {
         localDataSource.deleteElectionById(electionId)
-    }
-
-    companion object {
-        private const val TAG = "DefaultElectionRepository"
     }
 }

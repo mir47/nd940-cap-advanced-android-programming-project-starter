@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.data.Result.Success
-import com.example.android.politicalpreparedness.data.succeeded
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.repository.Result.Success
+import com.example.android.politicalpreparedness.repository.succeeded
 import kotlinx.coroutines.launch
 
 class ElectionsViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
