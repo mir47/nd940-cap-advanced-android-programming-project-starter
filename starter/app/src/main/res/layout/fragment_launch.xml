@@ -6,33 +6,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/spacing_normal"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
         <Button
-            android:id="@+id/buttonRepresentatives"
+            android:id="@+id/button_representatives"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_normal"
             android:text="@string/button_representatives"
+            android:theme="@style/Button.Dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/buttonElections"
+            android:id="@+id/button_elections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_normal"
             android:text="@string/button_elections"
-            app:layout_constraintBottom_toTopOf="@id/buttonRepresentatives"
+            android:theme="@style/Button.Dark"
+            app:layout_constraintBottom_toTopOf="@id/button_representatives"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_normal"
-            app:layout_constraintBottom_toTopOf="@id/buttonElections"
+            app:layout_constraintBottom_toTopOf="@id/button_elections"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
